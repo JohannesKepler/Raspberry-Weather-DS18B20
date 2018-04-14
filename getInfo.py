@@ -1,6 +1,7 @@
 import os
 import glob
 import time
+from datetime import datetime
 import subprocess
 
 os.system('modprobe w1-gpio')
@@ -29,11 +30,12 @@ def read_temp():
         temp_c = float(temp_string) / 1000.0
 #        temp_f = temp_c * 9.0 / 5.0 + 32.0
         # adding line to return localtime with temp data
-        time_now = time.strftime('%m-%d-%Y %H:%M',time.localtime())
+        time_now = datetime.now()
+        time_now = time_now.strftime('%m-%d-%Y %H:%M')
         return [time_now, str(temp_c)]#, temp_f
 
 # write data to csv file
-f = open("temperature_data.csv", "a")
+f = open("/home/pi/Raspberry-Weather-DS18B20/temperature_data.csv", "a+")
 line_write = read_temp()
 f.write(','.join(line_write) + '\n')
 f.close()
